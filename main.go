@@ -9,9 +9,10 @@ import (
 )
 
 type Person struct {
-	Name      string    `hex:"subject-name" json:"name"`
-	Birthdate time.Time `hex:"birthdate" json:"birthdate"`
-	Height    float32   `json:"height"`
+	Name       string    `hex:"subject-name" json:"name"`
+	Birthdate  time.Time `hex:"birthdate" json:"birthdate"`
+	Height     float32   `json:"height"`
+	Occupation string    `hex:"job" json:"occupation"`
 }
 
 type Car struct {
@@ -25,9 +26,10 @@ type Car struct {
 func main() {
 	h := hex.Make(1950, 90)
 	caio := Person{
-		Name:      "Caio Everest",
-		Birthdate: time.Date(1995, time.November, 29, 0, 0, 0, 0, time.UTC),
-		Height:    1.72,
+		Name:       "Caio Everest",
+		Birthdate:  time.Date(1995, time.November, 29, 0, 0, 0, 0, time.UTC),
+		Height:     1.72,
+		Occupation: "Software Engineer",
 	}
 
 	Corsa := &Car{

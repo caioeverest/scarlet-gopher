@@ -2,9 +2,7 @@ package api
 
 import (
 	_ "embed"
-	"encoding/csv"
 	"math/rand"
-	"os"
 	"reflect"
 	"time"
 )
@@ -17,9 +15,9 @@ type Car struct {
 type brandMap map[string]string
 
 const (
-	brandFilePath = ".internal-db/car-brand.csv"
-	modelFilePath = ".internal-db/car-model.csv"
-	UnknownBrand  = "UNKNOWN"
+	carBrandFilePath = ".internal-db/car-brand.csv"
+	carModelFilePath = ".internal-db/car-model.csv"
+	UnknownBrand     = "UNKNOWN"
 )
 
 func GetCarsFrom(brand string) (cars []Car) {
@@ -57,7 +55,7 @@ func GetAnotherCarOfTheSameBrand(model string) (car Car) {
 
 func loadCarsDB() (cars []Car) {
 	brands := getCarBrandMap()
-	modelRecords, err := readCSV(modelFilePath)
+	modelRecords, err := readCSV(carModelFilePath)
 	if err != nil {
 		return
 	}
@@ -84,7 +82,7 @@ func getCarBrandMap() brandMap {
 		err       error
 	)
 
-	if records, err = readCSV(brandFilePath); err != nil {
+	if records, err = readCSV(carBrandFilePath); err != nil {
 		return nil
 	}
 
@@ -92,27 +90,4 @@ func getCarBrandMap() brandMap {
 		returnMap[record[0]] = record[1]
 	}
 	return returnMap
-}
-
-func readCSV(fileName string) (records [][]string, err error) {
-	var (
-		file   *os.File
-		reader *csv.Reader
-	)
-
-	if file, err = os.Open(fileName); err != nil {
-		return [][]string{}, err
-	}
-	defer file.Close()
-
-	reader = csv.NewReader(file)
-	reader.Comma = ';'
-	if _, err = reader.Read(); err != nil {
-		return [][]string{}, err
-	}
-
-	if records, err = reader.ReadAll(); err != nil {
-		return [][]string{}, err
-	}
-	return records, nil
 }
